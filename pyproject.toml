@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "simple-git"
+version = "0.1.0"
+description = "A cli tool to simplify working with git"
+authors = ["Harold Karibiye <haroldkaribiye@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+typer = {extras = ["all"], version = "^0.6.1"}
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+mypy = "^0.961"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
