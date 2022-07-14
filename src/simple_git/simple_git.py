@@ -4,6 +4,8 @@ import logging
 from rich.logging import RichHandler
 import readline
 
+from . import __version__
+
 FORMAT = "%(message)s"
 logging.basicConfig(
     level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()]
@@ -18,7 +20,7 @@ def create_and_checkout_to_branch(
     name: str,
 ):
     '''
-    Creates a new branch from the argument specified delimited by '-' if it does not exist and checkouts to that branch 
+    Creates a new branch from the argument specified delimited by '-' if it does not exist and checkouts to that branch. 
     '''
     branch = create_branch(name)
     subprocess.run(["git", "checkout", "-b", f"{branch}"])
@@ -26,17 +28,17 @@ def create_and_checkout_to_branch(
 @app.command("push")
 def push(
     interactive: bool = typer.Option(
-        False, "-i", "--interactive", help="allows modification of commit message", show_default=True 
+        False, "-i", "--interactive", help="allows modification of commit message.", show_default=True 
     ),
     message: str = typer.Option(
-        '', "-m", "--message", help="commits all staged files with the specified message and pushes to the remote branch", show_default=True 
+        '', "-m", "--message", help="commits all staged files with the specified message and pushes to the remote branch.", show_default=True 
     ),
     files: str = typer.Option(
         '', "--files", help='''specify files to stage before commit and push. Example usage: simple-git push -m "fix typos" --files 'example.py utils.py src/config.toml'.'''
     ),
 ):
     '''
-    Pushes all changes to a remote branch of the current branch (creates one if it does not exist)
+    Pushes all changes to a remote branch of the current branch (creates one if it does not exist).
     '''
     __opts__ = {"-m", "--message", "-i", "--interactive", "--files"}
     try:
@@ -68,14 +70,14 @@ def push(
 @app.command("push-all")
 def push_all(
     interactive: bool = typer.Option(
-        False, "-i", "--interactive", help="allows modification of commit message", show_default=True 
+        False, "-i", "--interactive", help="allows modification of commit message.", show_default=True 
     ),
     message: str = typer.Option(
-        ..., "-m", "--message", help="commits all staged files with the specified message and pushes to the remote branch", show_default=True 
+        ..., "-m", "--message", help="commits all staged files with the specified message and pushes to the remote branch.", show_default=True 
     ),
 ):
     '''
-    Adds, commits and pushes all changes to a remote branch of the current branch (creates one if it does not exist)
+    Adds, commits and pushes all changes to a remote branch of the current branch (creates one if it does not exist).
     '''
     try:
         git_add(["."])
@@ -134,6 +136,16 @@ def push_to_remote():
     else:
         log.info("No commits to push.")
 
+def version_callback(value: bool):
+    if value:
+        typer.echo(f"Simple Git CLI Version: {__version__}.")
+        raise typer.Exit()
 
-def main():
+@app.callback()
+def main(
+    version: bool = typer.Option(None, "--version", help="Shows the installed version.", callback=version_callback, is_eager=True)
+):
+    return
+
+def cli():
     app()

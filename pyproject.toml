@@ -5,7 +5,7 @@ description = "A cli tool to simplify working with git"
 authors = ["Harold Karibiye <haroldkaribiye@gmail.com>"]
 
 [tool.poetry.scripts]
-simple-git = "simple_git.simple_git:main"
+simple-git = "simple_git.simple_git:cli"
 
 [tool.poetry.dependencies]
 python = "^3.9"
