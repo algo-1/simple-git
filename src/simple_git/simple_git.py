@@ -28,7 +28,7 @@ def push(
     '''Pushes all changes to a remote branch of the current branch (creates one if it does not exist)
 
     '''
-    __opts__ = {"-i", "--interactive", "--files"}
+    __opts__ = {"-m", "--message", "-i", "--interactive", "--files"}
     try:
         if files:
             if not message:
@@ -81,7 +81,7 @@ def rlinput(prompt, prefill=''):
       readline.set_startup_hook()
 
 def find_newline_or_space(string, start_index):
-    space_index = string.find(" ", start=start_index)
+    space_index = string.find(" ", start_index)
     newline_index = string.find('\n')
 
     if space_index != -1 and newline_index != -1:
@@ -103,8 +103,10 @@ def get_commits_not_pushed():
 def get_remote_branch():
     stdout = subprocess.run(["git", "status", "-sb"], capture_output=True, text=True).stdout
     start_index = stdout.find('origin')
-    end_index = find_newline_or_space(stdout, start_index)
-    return stdout[start_index:end_index] if start_index > 0 else ""
+    if start_index != -1:
+        end_index = find_newline_or_space(stdout, start_index)
+        return stdout[start_index:end_index]
+    return ""
 
 def push_to_remote():
     commits_to_push = get_commits_not_pushed()
