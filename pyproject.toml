@@ -4,6 +4,9 @@ version = "0.1.0"
 description = "A cli tool to simplify working with git"
 authors = ["Harold Karibiye <haroldkaribiye@gmail.com>"]
 
+[tool.poetry.scripts]
+simple-git = "simple_git.simple_git:main"
+
 [tool.poetry.dependencies]
 python = "^3.9"
 typer = {extras = ["all"], version = "^0.6.1"}
