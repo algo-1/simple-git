@@ -13,6 +13,16 @@ log = logging.getLogger("rich")
 
 app = typer.Typer()
 
+@app.command("create")
+def create_and_checkout_to_branch(
+    name: str,
+):
+    '''
+    Creates a new branch from the argument specified delimited by '-' if it does not exist and checkouts to that branch 
+    '''
+    branch = create_branch(name)
+    subprocess.run(["git", "checkout", "-b", f"{branch}"])
+
 @app.command("push")
 def push(
     interactive: bool = typer.Option(
@@ -25,8 +35,8 @@ def push(
         '', "--files", help='''specify files to stage before commit and push. Example usage: simple-git push -m "fix typos" --files 'example.py utils.py src/config.toml'.'''
     ),
 ):
-    '''Pushes all changes to a remote branch of the current branch (creates one if it does not exist)
-
+    '''
+    Pushes all changes to a remote branch of the current branch (creates one if it does not exist)
     '''
     __opts__ = {"-m", "--message", "-i", "--interactive", "--files"}
     try:
@@ -64,8 +74,8 @@ def push_all(
         ..., "-m", "--message", help="commits all staged files with the specified message and pushes to the remote branch", show_default=True 
     ),
 ):
-    '''Adds, commits and pushes all changes to a remote branch of the current branch (creates one if it does not exist)
-
+    '''
+    Adds, commits and pushes all changes to a remote branch of the current branch (creates one if it does not exist)
     '''
     try:
         git_add(["."])
@@ -89,9 +99,12 @@ def find_newline_or_space(string, start_index):
     else:
         return max(space_index, newline_index)
 
-def handle_subprocess_error(error):
-    typer.echo(f"Command failed", err=True)
-    typer.echo(f"{error.output}", err=True)
+def create_branch(name: str):
+    return "-".join(name.split())
+
+def handle_subprocess_error(error: subprocess.CalledProcessError):
+    log.error(f"Command failed")
+    log.error(f"{error.output}")
     raise typer.Exit(code=error.returncode)
 
 def git_add(files):
