@@ -1,5 +1,5 @@
-from simple_git import __version__
-from simple_git.simple_git import app
+from ezgit import __version__
+from ezgit.ezgit import app
 from typer.testing import CliRunner
 import subprocess
 
