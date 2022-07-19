@@ -2,13 +2,16 @@
 
 ## Installation
 
-`pip install ezgit`
+```
+pip install ezgit
+```
 
 run `ezgit --version` to confirm install
 
 ## Usage
-run `ezgit --help`to see a list of commands and their usage
-run `ezgit <command> --help` to see the available options and the respective usage for the specified command
+
+* run `ezgit --help`to see a list of commands and their usage
+* run `ezgit <command> --help` to see the available options and the respective usage for the specified command
 
 ## Sample Workflow
 
